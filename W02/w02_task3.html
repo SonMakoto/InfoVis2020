@@ -1,0 +1,27 @@
+<html>
+    <head>
+ 	<title>W02: task3</title>
+<script language="JavaScript"><!--
+function calc()
+{
+	v1 = eval(document.TRIANGLE.v1.value);
+	v2  = eval(document.TRIANGLE.v2.value);
+	v3  = eval(document.TRIANGLE.v3.value);
+	s=(v1+v2+v3)/2;
+	tmp  = s*(s-v1)*(s-v2)*(s-v3);
+	m=Math.sqrt(tmp);
+	document.TRIANGLE.result.value = m;
+}
+// --></script>
+    </head>
+<body>
+三角形の面積<br>
+<form name="TRIANGLE">
+斜辺A：<input type="text" name="v1"><br>
+斜辺B：<input type="text" name="v2"><br>
+斜辺C：<input type="text" name="v3"><br>
+面積  :<input type="text" name="result"><br>
+　　　　<input type="button" value="計算" onClick="calc()"><br>
+</form>
+</body>
+</html>
