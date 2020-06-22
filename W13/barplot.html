@@ -8,10 +8,11 @@
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
 
-
+<title>W12:task1</title>
+<body>
+自分の六月の銀行の預金残高の推移です．コロナによる自粛が解除され，外に出るようになり消費額がもっと伸びたと思っていたのですが，結果としてほとんど自粛期と変わっていませんでした．
+</body>
 <script>
-
-
 // set the dimensions and margins of the graph
 var margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
@@ -27,7 +28,7 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
-d3.csv("https://sonmakoto.github.io/InfoVis2020/W12/otamesi2.csv", function(data) {
+d3.csv("https://sonmakoto.github.io/InfoVis2020/W13/otamesi2.csv", function(data) {
 
 // X axis
 var x = d3.scaleBand()
@@ -60,5 +61,4 @@ svg.selectAll("mybar")
     .attr("fill", "#69b3a2")
 
 })
-
 </script>
