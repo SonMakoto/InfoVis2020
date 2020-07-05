@@ -24,12 +24,36 @@ function Isosurfaces( volume, isovalue, screen,reflection,r,g,b )
           }
         });
       }
-      if(reflection == 1){
+      else if(reflection == 1){
         var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
         material = new THREE.ShaderMaterial({
             vertexColors: THREE.VertexColors,
             vertexShader: document.getElementById('phong.vert').text,
             fragmentShader: document.getElementById('phong.frag').text,
+            uniforms: {
+              light_position: { type: 'v3', value: screen.light.position },
+              m_color: { type : 'v3', value: materialColor}
+            }
+          });
+        }
+       else if(reflection == 2){
+        var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
+        material = new THREE.ShaderMaterial({
+            vertexColors: THREE.VertexColors,
+            vertexShader: document.getElementById('blinnphong.vert').text,
+            fragmentShader: document.getElementById('blinnphong.frag').text,
+            uniforms: {
+              light_position: { type: 'v3', value: screen.light.position },
+              m_color: { type : 'v3', value: materialColor}
+            }
+          });
+        }
+ 	else if(reflection == 3){
+        var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
+        material = new THREE.ShaderMaterial({
+            vertexColors: THREE.VertexColors,
+            vertexShader: document.getElementById('cooktorrance.vert').text,
+            fragmentShader: document.getElementById('cooktorrance.frag').text,
             uniforms: {
               light_position: { type: 'v3', value: screen.light.position },
               m_color: { type : 'v3', value: materialColor}

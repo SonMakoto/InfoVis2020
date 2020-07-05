@@ -21,6 +21,7 @@ function main()
     var targetred = document.getElementById('redval');
     var targetgreen = document.getElementById('greenval');
     var targetblue = document.getElementById('blueval');
+
     var rangeValue = function (elem, target) {
       return function(evt){
     target.innerHTML = elem.value;
@@ -62,9 +63,11 @@ blue.addEventListener('input', rangeValueblue(blue, targetblue));
       screen.scene.add( surfaces );
 
        });
+ 
 
     var surfaces = Isosurfaces( volume, isovalue ,screen,reflection,r,g,b );
     screen.scene.add( surfaces );
+
 
     document.addEventListener( 'mousemove', function() {
         screen.light.position.copy( screen.camera.position );
@@ -81,8 +84,14 @@ function getReflection(){
   if(radio[0].checked){
     reflection = 0;
   }
-  else if (radio[1].checked) {
+if (radio[1].checked) {
     reflection = 1;
+  }
+ if (radio[2].checked) {
+    reflection = 2;
+  }
+ if (radio[3].checked) {
+    reflection = 3;
   }
   return reflection;
 }
