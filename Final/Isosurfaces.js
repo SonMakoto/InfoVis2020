@@ -1,14 +1,48 @@
-function Isosurfaces( volume, isovalue)
+function Isosurfaces( volume, isovalue, screen,reflection,r,g,b )
 {
     var geometry = new THREE.Geometry();
-    var material = new THREE.MeshLambertMaterial();
+    var cmap = [];
+    for ( var i = 0; i < 256; i++ )
+    {
+      var S = i / 255.0; // [0,1]
+      var R = Math.max( Math.cos( ( S - (r/2) ) * Math.PI ), 0.0 );
+      var G = Math.max( Math.cos( ( S - (g/2) ) * Math.PI ), 0.0 );
+      var B = Math.max( Math.cos( ( S - (b/2) ) * Math.PI ), 0.0 );
+      var color = new THREE.Color( R, G, B );
+      cmap.push( [ S, '0x' + color.getHexString() ] );
+    }
+    var material;
+    if(reflection == 0){
+      var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
+      material = new THREE.ShaderMaterial({
+          vertexColors: THREE.VertexColors,
+          vertexShader: document.getElementById('gouraud.vert').text,
+          fragmentShader: document.getElementById('gouraud.frag').text,
+          uniforms: {
+            light_position: { type: 'v3', value: screen.light.position },
+            m_color: { type : 'v3', value: materialColor}
+          }
+        });
+      }
+      if(reflection == 1){
+        var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
+        material = new THREE.ShaderMaterial({
+            vertexColors: THREE.VertexColors,
+            vertexShader: document.getElementById('phong.vert').text,
+            fragmentShader: document.getElementById('phong.frag').text,
+            uniforms: {
+              light_position: { type: 'v3', value: screen.light.position },
+              m_color: { type : 'v3', value: materialColor}
+            }
+          });
+        }
     var smin = volume.min_value;
     var smax = volume.max_value;
     isovalue = KVS.Clamp( isovalue, smin, smax );
+
     var lut = new KVS.MarchingCubesTable();
     var cell_index = 0;
     var counter = 0;
-
     for ( var z = 0; z < volume.resolution.z - 1; z++ )
     {
         for ( var y = 0; y < volume.resolution.y - 1; y++ )
@@ -40,9 +74,9 @@ function Isosurfaces( volume, isovalue)
                     var v4 = new THREE.Vector3( x + vid4[0], y + vid4[1], z + vid4[2] );
                     var v5 = new THREE.Vector3( x + vid5[0], y + vid5[1], z + vid5[2] );
 
-                    var v01 = interpolated_vertex( v0, v1, isovalue);
-                    var v23 = interpolated_vertex( v2, v3, isovalue);
-                    var v45 = interpolated_vertex( v4, v5, isovalue);
+                    var v01 = interpolated_vertex( v0, v1, isovalue );
+                    var v23 = interpolated_vertex( v2, v3, isovalue );
+                    var v45 = interpolated_vertex( v4, v5, isovalue );
 
                     geometry.vertices.push( v01 );
                     geometry.vertices.push( v23 );
@@ -61,15 +95,14 @@ function Isosurfaces( volume, isovalue)
 
     geometry.computeVertexNormals();
 
-    material.color = new THREE.Color( "red" );
-
-    return new THREE.Mesh( geometry, material);
+    return new THREE.Mesh( geometry, material );
 
 
     function cell_node_indices( cell_index )
     {
         var lines = volume.resolution.x;
         var slices = volume.resolution.x * volume.resolution.y;
+
         var id0 = cell_index;
         var id1 = id0 + 1;
         var id2 = id1 + lines;
@@ -106,22 +139,21 @@ function Isosurfaces( volume, isovalue)
         return index;
     }
 
-    function interpolated_vertex( v0, v1, s)
+    function interpolated_vertex( v0, v1, s )
     {
-        var xlim = volume.resolution.x
-        var ylim = volume.resolution.y;
+            var xlim = volume.resolution.x
+            var ylim = volume.resolution.y;
 
-        var v0id = v0.x + v0.y * xlim + v0.z * xlim * ylim
-        var v1id = v1.x + v1.y * xlim + v1.z * xlim * ylim
-        var S0 = volume.values[v0id][0]
-        var S1 = volume.values[v1id][0]
+            var v0id = v0.x + v0.y * xlim + v0.z * xlim * ylim
+            var v1id = v1.x + v1.y * xlim + v1.z * xlim * ylim
+            var S0 = volume.values[v0id][0]
+            var S1 = volume.values[v1id][0]
 
-        var t = (s - S0)/(S1-S0)
-        var x = t * (v1.x-v0.x) + v0.x
-        var y = t * (v1.y-v0.y) + v0.y
-        var z = t * (v1.z-v0.z) + v0.z
+            var t = (s - S0)/(S1-S0)
+            var x = t * (v1.x-v0.x) + v0.x
+            var y = t * (v1.y-v0.y) + v0.y
+            var z = t * (v1.z-v0.z) + v0.z
 
-
-        return new THREE.Vector3(x,y,z)
-    }
+            return new THREE.Vector3(x,y,z)
+        }
 }
