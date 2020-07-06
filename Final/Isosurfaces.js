@@ -12,7 +12,7 @@ function Isosurfaces( volume, isovalue, screen,reflection,r,g,b )
       cmap.push( [ S, '0x' + color.getHexString() ] );
     }
     var material;
-    if(reflection == 0){
+    if(reflection== 0){
       var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
       material = new THREE.ShaderMaterial({
           vertexColors: THREE.VertexColors,
@@ -24,7 +24,7 @@ function Isosurfaces( volume, isovalue, screen,reflection,r,g,b )
           }
         });
       }
-      else if(reflection == 1){
+     if(reflection== 1){
         var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
         material = new THREE.ShaderMaterial({
             vertexColors: THREE.VertexColors,
@@ -36,24 +36,24 @@ function Isosurfaces( volume, isovalue, screen,reflection,r,g,b )
             }
           });
         }
-       else if(reflection == 2){
+      if(reflection==2){
         var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
         material = new THREE.ShaderMaterial({
             vertexColors: THREE.VertexColors,
-            vertexShader: document.getElementById('blinnphong.vert').text,
-            fragmentShader: document.getElementById('blinnphong.frag').text,
+            vertexShader: document.getElementById('BlinnPhong.vert').text,
+            fragmentShader: document.getElementById('BlinnPhong.frag').text,
             uniforms: {
               light_position: { type: 'v3', value: screen.light.position },
               m_color: { type : 'v3', value: materialColor}
             }
           });
         }
- 	else if(reflection == 3){
+ 	if(reflection==3){
         var materialColor =new THREE.Color().setHex( cmap[isovalue][1]);
         material = new THREE.ShaderMaterial({
             vertexColors: THREE.VertexColors,
-            vertexShader: document.getElementById('cooktorrance.vert').text,
-            fragmentShader: document.getElementById('cooktorrance.frag').text,
+            vertexShader: document.getElementById('CookTorrance.vert').text,
+            fragmentShader: document.getElementById('CookTorrance.frag').text,
             uniforms: {
               light_position: { type: 'v3', value: screen.light.position },
               m_color: { type : 'v3', value: materialColor}

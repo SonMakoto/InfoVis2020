@@ -3,8 +3,14 @@
 	<title>Final Task</title>
     </head>
     <meta http-equiv="content-type" charset="utf-8">
-<div style="text-align:center"><font size="7">情報可視化論　最終課題</font><br>
-<font size="7">201x 013x 孫　誠</font><br>
+<div style="text-align:center"><font size="5">情報可視化論　最終課題</font><br>
+<font size="5">201x 013x 孫　誠</font><br>
+  <br>
+    isovalue,RGB,reflection modelをapplyのボタンを押すことすることで変更できるようにしました．<br>
+<font size="3">・isovalueを0-254の間で変更できるようにしました．</font><br>
+<font size="3">・色(R,G,B)を0-1の間で変更できるようにしました．</font><br>
+<font size="3">・LambertReflection,PhongReflectionを追加し，チェックで変更できるようにしました．</font><br>
+<font size="3">・Blinn_PhongReflection,Cook-TooraceReflectionも追加したのですが，うまく反映できませんでした．選択すると真っ黒になってしまいます．考えられる理由としてIsosurfaceのmaterialにおいて上手に値の代入がうまくいっていないと思います．</font><br>
   </div>
   <div align="left">
     
@@ -60,10 +66,10 @@
   	</script>
 <!--PhongReflection-->
 <script type="x-shader/x-vertex" id="phong.vert">
-varying vec3 point_color;
-varying vec4 point_position;
-varying vec3 normal_vector;
-uniform vec3 m_color;
+	varying vec3 point_color;
+	varying vec4 point_position;
+	varying vec3 normal_vector;
+	uniform vec3 m_color;
 
 void main()
 {
@@ -108,7 +114,7 @@ gl_FragColor = vec4( shaded_color, 1.0 );
 }
 </script>
 <!--Blinn-PhongReflection-->
- <script type="x-shader/x-vertex" id="blinnphong.vert">
+ <script type="x-shader/x-vertex" id="BlinnPhong.vert">
       varying vec3 point_color;
       varying vec4 point_position;
       varying vec3 normal_vector;
@@ -123,7 +129,7 @@ gl_FragColor = vec4( shaded_color, 1.0 );
       gl_Position = projectionMatrix * point_position;
       }
     </script>
- <script type="x-shader/x-fragment" id="blinnphong.frag">
+ <script type="x-shader/x-fragment" id="BlinnPhong.frag">
       varying vec3 point_color;
       varying vec4 point_position;
       varying vec3 normal_vector;
@@ -157,7 +163,7 @@ gl_FragColor = vec4( shaded_color, 1.0 );
       }
 </script>
 <!--Cook_Torrance Reflection-->
-<script type="x-shader/x-vertex" id="cooktorrance.vert">
+<script type="x-shader/x-vertex" id="CookTorrance.vert">
       varying vec3 point_color;
       varying vec4 point_position;
       varying vec3 normal_vector;
@@ -172,7 +178,7 @@ gl_FragColor = vec4( shaded_color, 1.0 );
       gl_Position = projectionMatrix * point_position;
       }
     </script>
-<script type="x-shader/x-fragment" id="cooktorrance.frag">
+<script type="x-shader/x-fragment" id="CookTorrance.frag">
       varying vec3 point_color;
       varying vec4 point_position;
       varying vec3 normal_vector;
@@ -225,8 +231,8 @@ gl_FragColor = vec4( shaded_color, 1.0 );
       gl_FragColor = vec4( shaded_color, 1.0 );
       }
   </script>
-  <div id="display" style="width: 81%; float: left;"></div>
-<div id="controller" style="width:19%; float:left;">
+<div id="display" style="width: 85%; float: left;"></div>
+<div id="controller" style="width:15%; float:left;">
 <label id="label" style="font-family:Arial;"></label>
 <input type="range" min="0" max="254" step="1" value="127"
 id="isovalue"/>isovalue
@@ -241,9 +247,9 @@ id="green"/>green
 id="blue"/>blue
 <span id="blueval">0.5</span><br>
 <input type="radio" name="reflection" id="Lambertian" value = 0 checked> Lambertian<br>
-<input type="radio" name="reflection" id="phong" value = 1 > Phong<br>
-<input type="radio" name="reflection" id="blinnphong" value = 2 > Blinn-Phong<br>
-<input type="radio" name="reflection" id="cooktorrance" value = 3 > Cook-Torrance<br>
+<input type="radio" name="reflection" id="Phong" value = 1 > Phong<br>
+<input type="radio" name="reflection" id="BlinnPhong" value = 2 > Blinn-Phong<br>
+<input type="radio" name="reflection" id="CookTorrance" value = 3 > Cook-Torrance<br>
 <button id="change-isovalue-button" style="font-family=Arial;">
 Apply</button><br>
 </div>

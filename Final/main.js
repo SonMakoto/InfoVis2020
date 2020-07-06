@@ -82,16 +82,16 @@ blue.addEventListener('input', rangeValueblue(blue, targetblue));
 function getReflection(){
   radio = document.getElementsByName('reflection')
   if(radio[0].checked){
-    reflection = 0;
+    reflection= 0;
   }
-if (radio[1].checked) {
-    reflection = 1;
+  if (radio[1].checked) {
+    reflection= 1;
   }
  if (radio[2].checked) {
-    reflection = 2;
+    reflection= 2;
   }
  if (radio[3].checked) {
-    reflection = 3;
+    reflection= 3;
   }
   return reflection;
 }
